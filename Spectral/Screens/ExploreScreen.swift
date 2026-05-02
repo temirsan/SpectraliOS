@@ -14,12 +14,12 @@ struct ExploreScreen: View {
     ]
     
     // 2. Sample colors for your squares
-    let colors: [Color] = [.red, .blue, .green, .yellow, .purple, .orange, .pink, .cyan, .brown, .black]
+    let colors: [Color] = [.red, .blue, .green, .yellow, .purple, .orange, .pink, .cyan, .]
 
     var body: some View {
         ScrollView {
             // 3. The Grid container
-            LazyVGrid(columns: columns, spacing: 8) {
+            LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(0..<colors.count, id: \.self) { index in
                     RoundedRectangle(cornerRadius: 12)
                         .fill(colors[index])
