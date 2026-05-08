@@ -25,4 +25,12 @@ struct ThemeCategory: Codable, Identifiable, Hashable {
         let currentLanguageCode = Locale.current.language.languageCode?.identifier ?? "en"
         return titles[currentLanguageCode] ?? title
     }
+    static let sample = ThemeCategory(
+            id: "premium",
+            title: "Premium",
+            titles: ["en": "Premium", "ru": "Премиум"],
+            coverUrl: "https://example.com/cover.jpg",
+            previewUrls: [],
+            isPremium: true
+        )
 }

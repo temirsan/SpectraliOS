@@ -1,37 +1,48 @@
-//
-//  ExploreScreen.swift
-//  Spectral
-//
-//  Created by Temir Atambayev on 01/05/2026.
-//
-
 import SwiftUI
 
 struct ExploreScreen: View {
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
+    private let columns = 2
+
+    let colors: [Color] = [
+        .red, .blue, .green, .yellow, .purple, .orange,
+        .pink, .cyan, .brown, .mint, .indigo, .teal
     ]
-    
-    // 2. Sample colors for your squares
-    let colors: [Color] = [.red, .blue, .green, .yellow, .purple, .orange, .pink, .cyan, .]
+
+    var gridColumns: [GridItem] {
+        Array(repeating: GridItem(.flexible(), spacing: ScreenLayout.contentGridSpacing), count: columns)
+    }
 
     var body: some View {
-        ScrollView {
-            // 3. The Grid container
-            LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(0..<colors.count, id: \.self) { index in
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(colors[index])
-                        .aspectRatio(1, contentMode: .fit) // Keeps them as perfect squares
-                        .overlay(
-                            Text("Square \(index + 1)")
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                        )
+        ZStack(alignment: .top) {
+            Color(.systemGray6).ignoresSafeArea()
+
+            ScrollView {
+                LazyVGrid(columns: gridColumns, spacing: ScreenLayout.contentGridSpacing) {
+                    ForEach(Array(colors.enumerated()), id: \.offset) { index, color in
+                        NavigationLink(value: Wallpaper.sample) {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(color)
+                                .aspectRatio(1, contentMode: .fit)
+                                .clipShape(ScreenLayout.gridCardShape(index: index, columns: columns))
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
+                .padding(ScreenLayout.gridContentPadding)
             }
-            .padding()
+            .background(Color(.systemBackground))
+            .clipShape(ScreenLayout.contentSheetShape())
+            .ignoresSafeArea(edges: .bottom)
+        }
+        .navigationTitle("Spectral")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button { } label: { Image(systemName: "shuffle") }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { } label: { Image(systemName: "gearshape") }
+            }
         }
     }
 }
