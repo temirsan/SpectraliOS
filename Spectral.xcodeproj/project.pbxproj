@@ -24,6 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3818F4B030B35CE200293608 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		38B65D982F8124D7002A4A65 /* Spectral.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spectral.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38B65DA72F8124D8002A4A65 /* SpectralTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpectralTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		38B65DB12F8124D8002A4A65 /* SpectralUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpectralUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +89,7 @@
 		38B65D8F2F8124D7002A4A65 = {
 			isa = PBXGroup;
 			children = (
+				3818F4B030B35CE200293608 /* .gitignore */,
 				38B65D9A2F8124D7002A4A65 /* Spectral */,
 				38B65DAA2F8124D8002A4A65 /* SpectralTests */,
 				38B65DB42F8124D8002A4A65 /* SpectralUITests */,
