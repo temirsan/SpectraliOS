@@ -1,7 +1,18 @@
 import SwiftUI
 
 struct ExploreScreen: View {
-    private let columns = 2
+    private var columns: Int {
+        #if canImport(UIKit)
+        // iPhone: 2 columns
+        guard UIDevice.current.userInterfaceIdiom == .pad else { return 2 }
+        let size = UIScreen.main.bounds.size
+        let shortest = min(size.width, size.height)
+        // iPad mini typically has a 744pt compact side; standard iPads are 810pt+
+        return shortest <= 744 ? 3 : 4
+        #else
+        return 2
+        #endif
+    }
 
     let colors: [Color] = [
         .red, .blue, .green, .yellow, .purple, .orange,
@@ -14,7 +25,11 @@ struct ExploreScreen: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            Color(.systemGray6).ignoresSafeArea()
+#if canImport(UIKit)
+            Color(UIColor.systemGray6).ignoresSafeArea()
+#else
+            Color.gray.opacity(0.1).ignoresSafeArea()
+#endif
 
             ScrollView {
                 LazyVGrid(columns: gridColumns, spacing: ScreenLayout.contentGridSpacing) {
@@ -45,4 +60,8 @@ struct ExploreScreen: View {
             }
         }
     }
+}
+
+#Preview {
+    ExploreScreen()
 }

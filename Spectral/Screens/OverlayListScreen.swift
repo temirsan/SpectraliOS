@@ -16,21 +16,45 @@ struct OverlayListScreen: View {
     let colors: [Color] = [.red, .blue, .green, .yellow, .purple, .orange, .pink, .cyan, .brown, .black]
 
     var body: some View {
-        ScrollView {
-            // 3. The Grid container
-            LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(0..<colors.count, id: \.self) { index in
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(colors[index])
-                        .aspectRatio(2, contentMode: .fit) // Keeps them as perfect squares
-                        .overlay(
-                            Text("Square \(index + 1)")
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                        )
+        
+        ZStack(alignment: .top) {
+#if canImport(UIKit)
+            Color(UIColor.systemGray6).ignoresSafeArea()
+#else
+            Color.gray.opacity(0.1).ignoresSafeArea()
+#endif
+
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: ScreenLayout.contentGridSpacing) {
+                    ForEach(0..<colors.count, id: \.self) { index in
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(colors[index])
+                            .aspectRatio(2, contentMode: .fit)
+                            .clipShape(ScreenLayout.gridCardShape(index: index, columns: 2))
+                            .overlay(
+                                Text("Square \(index + 1)")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                            )
+                    }
                 }
+                .padding(ScreenLayout.gridContentPadding)
             }
-            .padding()
+            .background(Color(.systemBackground))
+            .clipShape(ScreenLayout.contentSheetShape())
+            .ignoresSafeArea(edges: .bottom)
         }
+        .navigationTitle("Spectral")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { } label: { Image(systemName: "gearshape") }
+            }
+        }
+        
     }
+}
+
+#Preview {
+    OverlayListScreen()
 }

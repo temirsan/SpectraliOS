@@ -21,23 +21,41 @@ struct CollectionListScreen: View {
   
 
     var body: some View {
-        ScrollView {
-            // 3. The Grid container
-            LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(categories) { category in
-                    NavigationLink(value: category) {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.purple.opacity(0.3))
-                            .aspectRatio(2, contentMode: .fit) // Keeps them as perfect squares
-                            .overlay {
-                                Text(category.localizedTitle())
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                            }
+        ZStack(alignment: .top) {
+#if canImport(UIKit)
+            Color(UIColor.systemGray6).ignoresSafeArea()
+#else
+            Color.gray.opacity(0.1).ignoresSafeArea()
+#endif
+
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: ScreenLayout.contentGridSpacing) {
+                    ForEach(Array(categories.enumerated()), id: \.element.id) { index, category in
+                        NavigationLink(value: category) {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(.purple.opacity(0.3))
+                                .aspectRatio(2, contentMode: .fit)
+                                .clipShape(ScreenLayout.gridCardShape(index: index, columns: columns.count))
+                                .overlay {
+                                    Text(category.localizedTitle())
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                }
+                        }
                     }
                 }
+                .padding(ScreenLayout.gridContentPadding)
             }
-            .padding()
+            .background(Color(.systemBackground))
+            .clipShape(ScreenLayout.contentSheetShape())
+            .ignoresSafeArea(edges: .bottom)
+        }
+        .navigationTitle("Spectral")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { } label: { Image(systemName: "gearshape") }
+            }
         }
     }
 }
@@ -47,5 +65,5 @@ struct CollectionListScreen: View {
 }
 
 #Preview("iPad") {
-    CollectionListScreen().previewDevice("iPad Pro 13-inch (M4)")
+    CollectionListScreen()
 }
